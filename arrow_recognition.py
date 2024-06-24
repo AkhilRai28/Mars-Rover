@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import math
 
+#matching
 right_arrow = cv2.imread("Right_Arrow.jpg", cv2.IMREAD_GRAYSCALE)
 left_arrow = cv2.imread("Left_Arrow.jpg", cv2.IMREAD_GRAYSCALE)
 MATCH_THRESHOLD = 0.8
@@ -79,8 +80,15 @@ def match_and_annotate(frame, template, color, label):
         angle = math.degrees(math.atan2(top_left[1] - (frame.shape[0] // 2), top_left[0] - (frame.shape[1] // 2)))
         print(f'{label} arrow detected at angle: {angle}')
 
-def main():
+def init_video_capture():
+    """Initialize the video capture from the default camera."""
     cap = cv2.VideoCapture(0)
+    if not cap.isOpened():
+        raise IOError("Cannot open webcam")
+    return cap
+
+def main():
+    cap = init_video_capture()
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
@@ -100,3 +108,32 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# logging
+def log_initialization():
+    """Log the initialization of the system."""
+    print("System initialization...")
+
+def log_template_loaded(template_name):
+    """Log that a template has been loaded."""
+    print(f"Template {template_name} loaded.")
+
+
+def log_edge_detection():
+    """Log that edge detection is being performed."""
+    print("Performing edge detection...")
+
+def log_contour_detection():
+    """Log that contour detection is being performed."""
+    print("Detecting contours...")
+
+def log_template_matching():
+    """Log that template matching is being performed."""
+    print("Performing template matching...")
+
+log_initialization()
+log_template_loaded("Right_Arrow")
+log_template_loaded("Left_Arrow")
+log_edge_detection()
+log_contour_detection()
+log_template_matching()
